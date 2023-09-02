@@ -1,0 +1,164 @@
+{
+	"jobConfig": {
+		"name": "s3-to-snowflake",
+		"description": "",
+		"role": "arn:aws:iam::354038667246:role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "3.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 2,
+		"maxCapacity": 2,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 2,
+		"security": "none",
+		"scriptName": "s3-to-snowflake-job.py",
+		"scriptLocation": "s3://aws-glue-assets-354038667246-us-east-2/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-02T03:54:19.787Z",
+		"developerMode": false,
+		"connectionsList": [
+			"snowflake-connection"
+		],
+		"temporaryDirectory": "s3://aws-glue-assets-354038667246-us-east-2/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"spark": true,
+		"bookmark": "job-bookmark-disable",
+		"sparkPath": "s3://aws-glue-assets-354038667246-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1": {
+			"nodeId": "node-1",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Read from S3 bucket",
+			"generatedNodeName": "ReadfromS3bucket_node1",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "csv",
+			"paths": [
+				"s3://snowflake-s3-darshini/load/mytable.csv"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://snowflake-s3-darshini/load/mytable.csv",
+				"boundedOption": null
+			},
+			"separator": ",",
+			"escaper": "",
+			"quoteChar": "\"",
+			"multiline": true,
+			"withHeader": true,
+			"writeHeader": null,
+			"skipFirst": null,
+			"optimizePerformance": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "C_CUSTOMER_ID",
+						"fullPath": [
+							"C_CUSTOMER_ID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "C_EMAIL_ADDRESS",
+						"fullPath": [
+							"C_EMAIL_ADDRESS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-2": {
+			"nodeId": "node-2",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1"
+			],
+			"name": "Transformation",
+			"generatedNodeName": "Transformation_node2",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "C_CUSTOMER_ID",
+					"fromPath": [
+						"C_CUSTOMER_ID"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "C_EMAIL_ADDRESS",
+					"fromPath": [
+						"C_EMAIL_ADDRESS"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-3": {
+			"nodeId": "node-3",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-2"
+			],
+			"name": "Write to Snowflake",
+			"generatedNodeName": "WritetoSnowflake_node3",
+			"classification": "DataSink",
+			"type": "Connector",
+			"streamingBatchInterval": 100,
+			"connectorName": "Snowflake Connector 2.9.1 for AWS Glue 3.0",
+			"connectionName": "snowflake-connection",
+			"outputSchemas": [],
+			"connectionType": "marketplace.spark",
+			"additionalOptions": {
+				"sfUrl": "vqlxhjj-ed20890.snowflakecomputing.com",
+				"sfWarehouse": "COMPUTE_WH",
+				"dbtable": "mytable",
+				"sfDatabase": "mydb",
+				"sfSchema": "myschema"
+			},
+			"calculatedType": ""
+		}
+	},
+	"hasBeenSaved": false
+}
