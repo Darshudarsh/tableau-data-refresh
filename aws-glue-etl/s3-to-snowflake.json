@@ -33,7 +33,8 @@
 		"bookmark": "job-bookmark-disable",
 		"sparkPath": "s3://aws-glue-assets-354038667246-us-east-2/sparkHistoryLogs/",
 		"flexExecution": false,
-		"minFlexWorkers": null
+		"minFlexWorkers": null,
+		"pythonPath": ""
 	},
 	"dag": {
 		"node-1": {
@@ -151,13 +152,15 @@
 			"outputSchemas": [],
 			"connectionType": "marketplace.spark",
 			"additionalOptions": {
-				"sfUrl": "vqlxhjj-ed20890.snowflakecomputing.com",
 				"sfWarehouse": "COMPUTE_WH",
+				"sfUrl": "vqlxhjj-ed20890.snowflakecomputing.com",
 				"dbtable": "mytable",
+				"preactions": "truncate table mydb.myschema.mytable",
 				"sfDatabase": "mydb",
 				"sfSchema": "myschema"
 			},
-			"calculatedType": ""
+			"calculatedType": "",
+			"codeGenVersion": 2
 		}
 	},
 	"hasBeenSaved": false
