@@ -36,7 +36,7 @@ Once data source mydatasource is refreshed successfully, push a notification pos
 1. AWS Glue, configured with the script `s3-to-snowflake-job.py`, establishes a source connection to an S3 bucket for accessing source files. It also defines Snowflake as the destination using **Glue Connector 3.0**. Parameters are passed to the connector.
 
 ![aws-glue-etl.png](assests/aws-glue-etl.png)
-2. The Truncate DML is executed as a pre-action in the Snowflake destination before loading new data into **`mytable`**. 
+2. The Truncate DML is executed as a pre-action in the Snowflake destination before loading new data into **`mytable`**.
 3. An AWS Lambda function named `table_datasource_refresh.py` contains Python code to refresh the **Tableau** data source. The following actions are performed:
    - Retrieval of **Project and Data Source IDs** based on provided Project and DataSource Names.
    - Signing into the **Tableau** service using a **personal access token**.
